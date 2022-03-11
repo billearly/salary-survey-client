@@ -1,19 +1,21 @@
 import { ChangeEvent, FormEvent, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Spinner } from "../components";
-import { createSurvey, PaySchedule } from "../services/api";
+import { joinSurvey, PaySchedule } from "../services/api";
 import { payScheduleValues } from "../utils/payScheduleValues";
 
-export const SurveyCreate = () => {
-  const [name, setName] = useState<string>("");
+/**
+ * Make sure the survey actually exists
+ * Save info to local storage
+ * Detect if I've already responded
+ */
+export const SurveyJoin = () => {
+  const { surveyId } = useParams();
+
   const [pay, setPay] = useState<string>("");
   const [schedule, setSchedule] = useState<string>(PaySchedule.HOURLY);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const [surveyId, setSurveyId] = useState<string>();
-
-  const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value);
-  };
+  const [respondentId, setRespondentId] = useState<string>();
 
   const handlePayChange = (e: ChangeEvent<HTMLInputElement>) => {
     setPay(e.target.value);
@@ -26,14 +28,13 @@ export const SurveyCreate = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!name || !pay || !schedule) {
+    if (!surveyId || !pay || !schedule) {
       return;
     }
 
     setIsSubmitting(true);
 
-    const data = await createSurvey({
-      name,
+    const data = await joinSurvey(surveyId, {
       pay: Number(pay),
       schedule,
     });
@@ -41,24 +42,15 @@ export const SurveyCreate = () => {
     setIsSubmitting(false);
 
     if (data) {
-      setSurveyId(data.surveyId);
-    }
-  };
-
-  const copyToClipboard = (content: string) => {
-    if (window.navigator) {
-      window.navigator.clipboard.writeText(content);
+      setRespondentId(data.respondentId);
     }
   };
 
   return (
     <>
-      <h1>Create New Survey</h1>
+      <h1>Join Survey</h1>
 
       <form onSubmit={handleSubmit}>
-        <label>Name</label>
-        <input value={name} onChange={handleNameChange} />
-
         <label>Pay</label>
         <input value={pay} onChange={handlePayChange} />
 
@@ -74,18 +66,10 @@ export const SurveyCreate = () => {
 
       {isSubmitting && <Spinner />}
 
-      {surveyId && (
+      {respondentId && (
         <>
-          <Link to={`/surveys/${surveyId}`}>View Survey Results</Link>
-          <button
-            onClick={() => {
-              copyToClipboard(
-                `${window.location.host}/surveys/${surveyId}/join`
-              );
-            }}
-          >
-            Copy Share Link
-          </button>
+          <p>Success!</p>
+          <Link to={`/surveys/${surveyId}`}>View Results</Link>
         </>
       )}
     </>

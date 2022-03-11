@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Spinner } from "../components";
-import { getSurvey } from "../services/api";
+import { PayChart } from "../components/Chart/PayChart";
+import { getSurvey, PaySchedule, Survey } from "../services/api";
 
 export const SurveyView = () => {
   const { surveyId } = useParams();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [survey, setSurvey] = useState<any>();
+  const [survey, setSurvey] = useState<Survey>();
 
   useEffect(() => {
     if (surveyId) {
@@ -24,10 +25,16 @@ export const SurveyView = () => {
 
       {survey && (
         <>
-          <p>Creator: {survey.creatorId}</p>
+          <p>Name: {survey.name}</p>
           <p>Num responses: {survey.responses.length}</p>
         </>
       )}
+
+      <PayChart
+        responses={survey?.responses || []}
+        schedule={PaySchedule.HOURLY}
+        myRespondentId={"kxMvSBjuZ_CtXjp3HyBJP"}
+      />
 
       {isLoading && <Spinner />}
     </>

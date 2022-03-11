@@ -1,28 +1,28 @@
-import React, { Fragment } from "react";
+import { Fragment } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import logo from "./logo.svg";
+import { SurveyCreate, SurveyJoin, SurveyView } from "./pages";
 import "./App.css";
-import { SurveyCreate, SurveyView } from "./pages";
+import { Header } from "./components";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />}></Route>
-        <Route path="/surveys">
-          <Route path="create" element={<SurveyCreate />}></Route>
-          <Route path=":surveyId" element={<SurveyView />}></Route>
-        </Route>
+        <Route path="/" element={<Home />} />
+        <Route path="/surveys/create" element={<SurveyCreate />} />
+        <Route path="/surveys/:surveyId" element={<SurveyView />} />
+        <Route path="/surveys/:surveyId/join" element={<SurveyJoin />} />
       </Routes>
     </Router>
   );
 }
 
 const Home = () => (
-  <Fragment>
-    <h1>Home</h1>
+  <Header>
+    <h1>Salary Survey</h1>
+    <p>Know your worth</p>
     <Link to="/surveys/create">Create Survey</Link>
-  </Fragment>
+  </Header>
 );
 const About = () => <p>About</p>;
 const Dashboard = () => <p>Dashboard</p>;
