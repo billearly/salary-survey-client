@@ -88,7 +88,7 @@ export const groupPay = (allPay: number[]): GroupedPay => {
 export const toChartData = (
   groupedPay: GroupedPay,
   responses: SurveyResponse[],
-  myRespondentId: string
+  myRespondentId?: string
 ): PayChartData[] => {
   const chartData: PayChartData[] = [];
 

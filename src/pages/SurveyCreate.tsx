@@ -2,6 +2,7 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import { Link } from "react-router-dom";
 import { Spinner } from "../components";
 import { createSurvey, PaySchedule } from "../services/api";
+import { saveSurveyLocally } from "../services/localStorage";
 import { payScheduleValues } from "../utils/payScheduleValues";
 
 export const SurveyCreate = () => {
@@ -41,6 +42,11 @@ export const SurveyCreate = () => {
     setIsSubmitting(false);
 
     if (data) {
+      saveSurveyLocally({
+        surveyId: data.surveyId,
+        respondentId: data.respondentId,
+      });
+
       setSurveyId(data.surveyId);
     }
   };

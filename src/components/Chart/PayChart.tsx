@@ -13,7 +13,7 @@ import {
 type PayChartProps = {
   responses: SurveyResponse[];
   schedule: PaySchedule;
-  myRespondentId: string; // this isn't how I should do this. The API should mark which respons is mine. Just for now while testing
+  myRespondentId?: string; // this isn't how I should do this. The API should mark which respons is mine. Just for now while testing
 };
 
 export const PayChart: FC<PayChartProps> = ({
