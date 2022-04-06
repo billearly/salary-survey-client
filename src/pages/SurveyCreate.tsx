@@ -62,7 +62,7 @@ export const SurveyCreate = () => {
       <h1>Create New Survey</h1>
 
       <form onSubmit={handleSubmit}>
-        <label>Name</label>
+        <label>Title</label>
         <input value={name} onChange={handleNameChange} />
 
         <label>Pay</label>
