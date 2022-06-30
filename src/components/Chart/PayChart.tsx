@@ -9,6 +9,7 @@ import {
   toChartData,
   toCurrency,
 } from "../../utils";
+import "./PayChart.css";
 
 type PayChartProps = {
   responses: SurveyResponse[];
@@ -69,9 +70,7 @@ export const PayChart: FC<PayChartProps> = ({
               },
             },
             yAxis: {
-              display: false,
-              min: -0.5,
-              max: 0.5,
+              display: false
             },
           },
         },
@@ -80,16 +79,8 @@ export const PayChart: FC<PayChartProps> = ({
   }, [chartRoot, data, responses]);
 
   return (
-    <div
-      style={{
-        width: "500px",
-        display: "flex",
-        alignItems: "center",
-        overflow: "hidden",
-      }}
-    >
+    <div className="pay-chart">
       <canvas
-        style={{ margin: "50px" }}
         id="pay-chart"
         ref={chartRoot}
       ></canvas>

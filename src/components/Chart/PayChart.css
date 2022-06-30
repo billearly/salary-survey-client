@@ -1,0 +1,15 @@
+.pay-chart {
+  width: 500px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  margin: 4rem auto 0;
+
+  border: 1px solid #ededed;
+  border-radius: 1rem;
+  box-shadow: 5px 5px 10px #ededed;
+}
+
+.pay-chart canvas {
+  margin: 50px;
+}

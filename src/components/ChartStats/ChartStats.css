@@ -1,0 +1,9 @@
+.chart-stats {
+  margin: 0 auto;
+  width: 500px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 1rem;
+}

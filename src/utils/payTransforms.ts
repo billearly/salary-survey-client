@@ -107,10 +107,14 @@ export const toChartData = (
 };
 
 export const toCurrency = (
-  pay: string | number,
+  pay: string | number | undefined,
   local: string,
   currency: string
 ) => {
+  if (!pay) {
+    return 'undefined';
+  }
+
   return pay.toLocaleString(local, {
     style: "currency",
     currency,
