@@ -10,21 +10,11 @@ import {
   Section
 } from "../components";
 import { ManHoldingChart, WordOfMouth } from "../img";
+import { MainLayout } from "../layout";
 
 export const Home = () => (
-  <>
+  <MainLayout>
     <Header>
-      <div className="main-link-bar">
-        <div className="main-link-bar__content">
-          <Link to="/">Salary Survey</Link>
-
-          <div className="main-link-bar__content-links">
-            <Link to="/about/how-it-works">About</Link>
-            <div className="divider" />
-            <Link to="/surveys/create">Create</Link>
-          </div>
-        </div>
-      </div>
       <div className="main-content">
         <div>
           <h1>Salary Survey</h1>
@@ -77,7 +67,5 @@ export const Home = () => (
         />
       </IconCardRow>
     </Section>
-
-    <Footer />
-  </>
+  </MainLayout>
 );

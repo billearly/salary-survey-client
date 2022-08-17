@@ -1,0 +1,32 @@
+form {
+  width: 35rem;
+}
+
+form h1 {
+  padding-left: 2rem;
+  color: #4a4a4a;
+  font-size: 3rem;
+}
+
+form .row {
+  margin-bottom: 3rem;
+}
+
+form .row:first-child {
+  border-bottom: 2px dashed #4a4a4a;
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+}
+
+form .row:last-child {
+  margin-bottom: 0;
+}
+
+form .row h2 {
+  font-size: 2rem;
+}
+
+form .row p {
+  font-size: 0.75rem;
+  color: #4a4a4a;
+}

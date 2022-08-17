@@ -2,9 +2,14 @@ footer {
   padding: 1rem;
   background-color: #31879b;
   color: white;
+
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
 
-footer a, footer a:visited {
+footer a,
+footer a:visited {
   color: white;
   text-decoration: none;
 }
