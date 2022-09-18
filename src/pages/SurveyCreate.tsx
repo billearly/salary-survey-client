@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { Card, Direction, Section } from "../components";
 import { Button, Form, FormRow, Input, Label, RadioButton } from "../components/Form";
 import { useCreateSurvey } from "../hooks";
-import { Chart } from "../img";
 import { MainLayout } from "../layout";
 import { copyToClipboard } from "../utils";
 
@@ -23,8 +22,6 @@ export const SurveyCreate = () => {
 
   return (
     <MainLayout>
-      <Chart style={{ position: "absolute", zIndex: -100, opacity: "0.3" }} />
-
       <Section direction={Direction.VERTICAL}>
         {!surveyId &&
           <Form onSubmit={handleSubmit}>
