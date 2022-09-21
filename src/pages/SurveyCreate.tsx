@@ -3,6 +3,7 @@ import { Card, Direction, Section } from "../components";
 import { Button, Form, FormRow, Input, Label, RadioButton } from "../components/Form";
 import { useCreateSurvey } from "../hooks";
 import { MainLayout } from "../layout";
+import { PaySchedule } from "../services/api";
 import { copyToClipboard } from "../utils";
 
 export const SurveyCreate = () => {
@@ -10,6 +11,7 @@ export const SurveyCreate = () => {
     title,
     minResponses,
     pay,
+    schedule,
     isSubmitting,
     surveyId,
     handleTitleChange,
@@ -19,6 +21,8 @@ export const SurveyCreate = () => {
     handleScheduleChange,
     handleSubmit
   } = useCreateSurvey();
+
+  const payPlaceholder = schedule === PaySchedule.YEARLY ? '35,000' : '14.50';
 
   return (
     <MainLayout>
@@ -74,10 +78,16 @@ export const SurveyCreate = () => {
                 <Label>Pay Schedule</Label>
                 <RadioButton
                   name="pay-schedule"
-                  options={{
-                    hourly: "HOURLY",
-                    annually: "ANNUALLY"
-                  }}
+                  options={[
+                    {
+                      value: PaySchedule.HOURLY,
+                      displayText: "Hourly"
+                    },
+                    {
+                      value: PaySchedule.YEARLY,
+                      displayText: "Annually"
+                    }
+                  ]}
                   onChange={handleScheduleChange}
                   disabled={isSubmitting}
                   required
@@ -93,7 +103,7 @@ export const SurveyCreate = () => {
                   step={0.01}
                   onChange={handlePayChange}
                   onBlur={handlePayBlur}
-                  placeholder="30,000"
+                  placeholder={payPlaceholder}
                   type="number"
                   disabled={isSubmitting}
                   required

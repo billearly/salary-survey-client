@@ -3,16 +3,21 @@ import "./RadioButton.css";
 
 type RadioButtonProps = {
   name: string;
-  options: {[key: string]: string};
-} & React.InputHTMLAttributes<HTMLInputElement>;
+  options: Option[]
+} & Omit<React.InputHTMLAttributes<HTMLInputElement>, 'value' | 'id' | 'name' | 'type'>;
+
+type Option = {
+  value: string;
+  displayText: string;
+}
 
 export const RadioButton = ({ name, options, ...htmlInputAttributes }: RadioButtonProps) => {
   return (
     <div className="radio-button">
-      {Object.entries(options).map(([key, value]) => (
-        <div>
+      {options.map(({ value, displayText }) => (
+        <div key={`${name}- ${value}`}>
           <input
-            id={`${name}-${key}`}
+            id={`${name}-${value}`}
             value={value}
             name={name}
             type="radio"
@@ -20,9 +25,9 @@ export const RadioButton = ({ name, options, ...htmlInputAttributes }: RadioButt
           />
 
           <label
-            htmlFor={`${name}-${key}`}
+            htmlFor={`${name}-${value}`}
           >
-            {key}
+            {displayText}
           </label>
         </div>
       ))}

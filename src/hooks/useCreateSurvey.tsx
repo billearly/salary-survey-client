@@ -9,8 +9,8 @@ interface CreateSurvey {
   title: string;
   minResponses: number;
   pay: string;
-  schedule: string;
-  
+  schedule: PaySchedule | undefined;
+
   isSubmitting: boolean;
   surveyId?: string;
 
@@ -27,11 +27,11 @@ export const useCreateSurvey = (): CreateSurvey => {
   const [minResponses, setMinResponses] = useState<number>(NUM_RESPONSES_MIN);
 
   const [pay, setPay] = useState<string>("");
-  const [schedule, setSchedule] = useState<string>(PaySchedule.HOURLY);
+  const [schedule, setSchedule] = useState<PaySchedule | undefined>();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [surveyId, setSurveyId] = useState<string>();
 
-  
+
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
   };
@@ -39,7 +39,7 @@ export const useCreateSurvey = (): CreateSurvey => {
   const handleMinResponsesChange = (e: ChangeEvent<HTMLInputElement>) => {
     const targetValue = Number(e.target.value);
     const newValue = Math.min(Math.max(targetValue, NUM_RESPONSES_MIN), NUM_RESPONSES_MAX);
-    
+
     setMinResponses(newValue);
   }
 
@@ -53,7 +53,7 @@ export const useCreateSurvey = (): CreateSurvey => {
 
   const handleScheduleChange = (e: ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.value);
-    setSchedule(e.target.value);
+    setSchedule(PaySchedule[e.target.value as keyof typeof PaySchedule]);
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -88,10 +88,10 @@ export const useCreateSurvey = (): CreateSurvey => {
     minResponses,
     pay,
     schedule,
-    
+
     isSubmitting,
     surveyId,
-  
+
     handleTitleChange,
     handleMinResponsesChange,
     handlePayChange,
