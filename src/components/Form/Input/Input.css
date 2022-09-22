@@ -8,12 +8,6 @@ input {
   accent-color: #0075ff;
 }
 
-/* input:focus {
-  outline: none;
-  border-bottom-color: #0075ff;
-  /* border-color: red; */
-/* } */ */
-
 input[type=range]:focus {
   outline: dashed thin;
 }
