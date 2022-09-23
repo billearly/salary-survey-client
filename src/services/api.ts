@@ -41,7 +41,7 @@ export enum PaySchedule {
 }
 
 const instance = axios.create({
-  baseURL: "/prod", // In order to get around CORS issues locally... this needed to be shorted, and then 'proxy' was added to package.json
+  baseURL: process.env.REACT_APP_SALARY_SURVEY_API_URL,
   timeout: 30000,
 });
 
