@@ -11,6 +11,7 @@ enum ResponseStatus {
   SURVEY_ID_DOESNT_EXIST = "SURVEY_ID_DOESNT_EXIST",
   SURVEY_DOESNT_EXIST = "SURVEY_DOESNT_EXIST",
   CAN_RESPOND = "CAN_RESPOND",
+  ERROR = "ERROR"
 }
 
 export const SurveyJoin = () => {
@@ -25,24 +26,29 @@ export const SurveyJoin = () => {
   );
 
   const checkAbilityToRepond = async () => {
-    if (!surveyId) {
-      setResponseStatus(ResponseStatus.SURVEY_ID_DOESNT_EXIST);
-      return;
-    }
+    try {
+      if (!surveyId) {
+        setResponseStatus(ResponseStatus.SURVEY_ID_DOESNT_EXIST);
+        return;
+      }
 
-    const surveyInfo = getLocalSurvey(surveyId);
-    if (surveyInfo) {
-      setResponseStatus(ResponseStatus.ALREADY_RESPONDED);
-      return;
-    }
+      const surveyInfo = getLocalSurvey(surveyId);
+      if (surveyInfo) {
+        setResponseStatus(ResponseStatus.ALREADY_RESPONDED);
+        return;
+      }
 
-    const survey = await getSurvey(surveyId);
-    if (!survey) {
-      setResponseStatus(ResponseStatus.SURVEY_DOESNT_EXIST);
-      return;
-    }
+      const survey = await getSurvey(surveyId);
+      if (!survey) {
+        setResponseStatus(ResponseStatus.SURVEY_DOESNT_EXIST);
+        return;
+      }
 
-    setResponseStatus(ResponseStatus.CAN_RESPOND);
+      setResponseStatus(ResponseStatus.CAN_RESPOND);
+    } catch (e: unknown) {
+      console.error(e);
+      setResponseStatus(ResponseStatus.ERROR);
+    }
   };
 
   useEffect(() => {
@@ -115,6 +121,10 @@ export const SurveyJoin = () => {
 
       {responseStatus === ResponseStatus.ALREADY_RESPONDED && (
         <p>You've already responded to this survey</p>
+      )}
+
+      {responseStatus === ResponseStatus.ERROR && (
+        <p>An error occured</p>
       )}
 
       {responseStatus === ResponseStatus.UNKNOWN && (

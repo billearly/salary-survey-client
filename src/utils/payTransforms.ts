@@ -2,7 +2,7 @@ import { PaySchedule, SurveyResponse } from "../services/api";
 
 type GroupedPay = Map<number, number>;
 
-type PayChartData = {
+export type PayChartData = {
   x: number;
   y: number;
   r: number;

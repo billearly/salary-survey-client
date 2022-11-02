@@ -4,6 +4,7 @@ import { PaySchedule, SurveyResponse } from "../../services/api";
 import {
   groupPay,
   normalizePay,
+  PayChartData,
   setBubbleColor,
   setLabelText,
   toChartData,
@@ -38,8 +39,10 @@ export const PayChart: FC<PayChartProps> = ({
   };
 
   useEffect(() => {
+    let chart: Chart<"bubble", PayChartData[], unknown>;
+
     if (chartRoot.current && data && responses.length > 0) {
-      const chart = new Chart(chartRoot.current, {
+      chart = new Chart(chartRoot.current, {
         type: "bubble",
         data: data,
         options: {
@@ -75,6 +78,12 @@ export const PayChart: FC<PayChartProps> = ({
           },
         },
       });
+    }
+
+    return () => {
+      if (chart) {
+        chart.destroy();
+      }
     }
   }, [chartRoot, data, responses]);
 

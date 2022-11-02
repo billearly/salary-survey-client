@@ -69,6 +69,7 @@ export const useCreateSurvey = (): CreateSurvey => {
       name: title,
       pay: Number(pay),
       schedule,
+      minNumberResponses: minResponses
     });
 
     setIsSubmitting(false);

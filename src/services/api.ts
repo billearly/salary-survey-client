@@ -1,9 +1,10 @@
-import axios from "axios";
+import axios, { AxiosError, AxiosPromise } from "axios";
 
 type CreateSurveyPayload = {
   name: string;
   pay: number;
   schedule: string;
+  minNumberResponses: number;
 };
 
 type CreateSurveyResponse = {
@@ -22,6 +23,7 @@ type JoinSurveyResponse = {
 
 export type Survey = {
   name: string;
+  minNumberResponses: number;
   responses: SurveyResponse[];
 };
 
@@ -74,7 +76,7 @@ export const getSurvey = async (
   try {
     const res = await instance.get(`/survey/${surveyId}`);
     return res.data;
-  } catch (e) {
-    console.log(e);
+  } catch (e: unknown) {
+    console.error(e);
   }
 };
