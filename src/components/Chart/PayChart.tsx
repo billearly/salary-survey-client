@@ -15,30 +15,28 @@ import "./PayChart.css";
 type PayChartProps = {
   responses: SurveyResponse[];
   schedule: PaySchedule;
-  myRespondentId?: string; // this isn't how I should do this. The API should mark which respons is mine. Just for now while testing
 };
 
 export const PayChart: FC<PayChartProps> = ({
   responses,
   schedule,
-  myRespondentId,
 }) => {
   const chartRoot = useRef<HTMLCanvasElement>(null);
 
   const normalizedPay = responses.map((res) => normalizePay(res, schedule));
   const groupedResponses = groupPay(normalizedPay);
-  const chartData = toChartData(groupedResponses, responses, myRespondentId);
-
-  const data = {
-    datasets: [
-      {
-        label: "Salary",
-        data: chartData,
-      },
-    ],
-  };
+  const chartData = toChartData(groupedResponses, responses);
 
   useEffect(() => {
+    const data = {
+      datasets: [
+        {
+          label: "Salary",
+          data: chartData,
+        },
+      ],
+    };
+
     let chart: Chart<"bubble", PayChartData[], unknown>;
 
     if (chartRoot.current && data && responses.length > 0) {
@@ -85,7 +83,7 @@ export const PayChart: FC<PayChartProps> = ({
         chart.destroy();
       }
     }
-  }, [chartRoot, data, responses]);
+  }, [chartRoot, chartData, responses]);
 
   return (
     <div className="pay-chart">

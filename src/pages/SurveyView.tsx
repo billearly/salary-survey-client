@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Direction, Header, Section, Spinner } from "../components";
 import { PayChart } from "../components/Chart/PayChart";
 import { ChartStats } from "../components/ChartStats/ChartStats";
@@ -19,12 +19,22 @@ export const SurveyView = () => {
   const [surveyInfo, setSurveyInfo] = useState<SurveyInfo>();
 
   // States for errors
+  const [hasNotResponded, setHasNotResponded] = useState<boolean>(false);
   const [isNotEnoughResponses, setIsNotEnoughResponses] = useState<boolean>(false);
   const [numAdditionalResponsesNeeded, setNumAdditionalResponsesNeeded] = useState<number>(0);
 
   useEffect(() => {
     if (surveyId) {
-      getSurvey(surveyId).then((survey) => {
+      const localInfo = getLocalSurvey(surveyId);
+      setSurveyInfo(localInfo);
+
+      if (!localInfo?.respondentId) {
+        setHasNotResponded(true);
+        setIsLoading(false);
+        return;
+      }
+
+      getSurvey(surveyId, localInfo.respondentId).then((survey) => {
         setSurvey(survey);
 
         // TODO: Better handlng of undefined survey
@@ -38,17 +48,9 @@ export const SurveyView = () => {
     }
   }, [surveyId]);
 
-  // Load up my respondent ID from local storage
-  useEffect(() => {
-    if (surveyId) {
-      const localInfo = getLocalSurvey(surveyId);
-      setSurveyInfo(localInfo);
-    }
-  }, [surveyId]);
-
   const myResponseValue = useMemo(() => {
     if (survey && surveyInfo) {
-      return survey.responses.find(r => r.respondentId === surveyInfo.respondentId)?.pay;
+      return survey.responses.find(r => r.isMyResponse)?.pay;
     }
   }, [survey, surveyInfo])
 
@@ -70,6 +72,13 @@ export const SurveyView = () => {
         <h1>Survey Info</h1>
       </Header>
 
+      {hasNotResponded &&
+        <>
+          <p>You have not responded to this survey</p>
+          <Link to={`/surveys/${surveyId}/join`}>Fill Out Survey</Link>
+        </>
+      }
+
       {isNotEnoughResponses &&
         <Section direction={Direction.VERTICAL}>
           <ConnectedWorld style={{ width: "500px" }} />
@@ -82,7 +91,6 @@ export const SurveyView = () => {
           <PayChart
             responses={survey?.responses || []}
             schedule={PaySchedule.HOURLY}
-            myRespondentId={surveyInfo?.respondentId}
           />
 
           <ChartStats>

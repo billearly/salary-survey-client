@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosPromise } from "axios";
+import axios from "axios";
 
 type CreateSurveyPayload = {
   name: string;
@@ -28,7 +28,7 @@ export type Survey = {
 };
 
 export type SurveyResponse = {
-  respondentId: string;
+  isMyResponse: boolean;
   pay: number;
   schedule: PaySchedule;
 };
@@ -71,10 +71,16 @@ export const joinSurvey = async (
 };
 
 export const getSurvey = async (
-  surveyId: string
+  surveyId: string,
+  myRespondentId?: string
 ): Promise<Survey | undefined> => {
   try {
-    const res = await instance.get(`/survey/${surveyId}`);
+    const res = await instance.get(`/survey/${surveyId}`, {
+      headers: {
+        ...(myRespondentId ? { "X-Respondent-ID": myRespondentId } : {})
+      }
+    });
+
     return res.data;
   } catch (e: unknown) {
     console.error(e);

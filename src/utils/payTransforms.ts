@@ -88,7 +88,6 @@ export const groupPay = (allPay: number[]): GroupedPay => {
 export const toChartData = (
   groupedPay: GroupedPay,
   responses: SurveyResponse[],
-  myRespondentId?: string
 ): PayChartData[] => {
   const chartData: PayChartData[] = [];
 
@@ -98,7 +97,7 @@ export const toChartData = (
       y: 0,
       r: 5 * numRespondentsWithPay,
       isMyPay:
-        responses.find((response) => response.respondentId === myRespondentId)
+        responses.find((response) => response.isMyResponse)
           ?.pay === pay,
     });
   });
