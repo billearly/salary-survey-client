@@ -1,6 +1,9 @@
+import { DateTime } from 'luxon';
+
 export type SurveyInfo = {
   surveyId: string;
   respondentId: string;
+  expirationDate: DateTime;
 };
 
 const SURVEY_PREFIX = "survey-id";
@@ -25,7 +28,12 @@ export const getLocalSurvey = (surveyId: string): SurveyInfo | undefined => {
     );
 
     if (surveyInfo) {
-      return JSON.parse(surveyInfo);
+      const localSurvey = JSON.parse(surveyInfo);
+
+      return {
+        ...localSurvey,
+        expirationDate: DateTime.fromISO(localSurvey.expirationDate).toUTC()
+      }
     }
   }
 };

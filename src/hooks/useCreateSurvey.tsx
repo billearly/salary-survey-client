@@ -78,6 +78,7 @@ export const useCreateSurvey = (): CreateSurvey => {
       saveSurveyLocally({
         surveyId: data.surveyId,
         respondentId: data.respondentId,
+        expirationDate: data.expirationDate
       });
 
       setSurveyId(data.surveyId);

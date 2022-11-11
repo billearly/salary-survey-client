@@ -10,6 +10,7 @@ import { getLocalSurvey } from "../services/localStorage";
 import { SurveyInfo } from "../services/localStorage";
 import { toCurrency } from "../utils";
 import { ConnectedWorld } from "../img";
+import { DateTime } from "luxon";
 
 export const SurveyView = () => {
   const { surveyId } = useParams();
@@ -20,6 +21,7 @@ export const SurveyView = () => {
 
   // States for errors
   const [hasNotResponded, setHasNotResponded] = useState<boolean>(false);
+  const [isSurveyExpired, setIsSurveyExpired] = useState<boolean>(false);
   const [isNotEnoughResponses, setIsNotEnoughResponses] = useState<boolean>(false);
   const [numAdditionalResponsesNeeded, setNumAdditionalResponsesNeeded] = useState<number>(0);
 
@@ -30,6 +32,12 @@ export const SurveyView = () => {
 
       if (!localInfo?.respondentId) {
         setHasNotResponded(true);
+        setIsLoading(false);
+        return;
+      }
+
+      if (localInfo.expirationDate <= DateTime.utc()) {
+        setIsSurveyExpired(true);
         setIsLoading(false);
         return;
       }
@@ -76,6 +84,13 @@ export const SurveyView = () => {
         <>
           <p>You have not responded to this survey</p>
           <Link to={`/surveys/${surveyId}/join`}>Fill Out Survey</Link>
+        </>
+      }
+
+      {isSurveyExpired &&
+        <>
+          <p>This survey has expired</p>
+          <Link to={`/surveys/create`}>Create a new one</Link>
         </>
       }
 

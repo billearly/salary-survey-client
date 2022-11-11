@@ -1,4 +1,5 @@
 import axios from "axios";
+import { DateTime } from "luxon";
 
 type CreateSurveyPayload = {
   name: string;
@@ -10,6 +11,7 @@ type CreateSurveyPayload = {
 type CreateSurveyResponse = {
   surveyId: string;
   respondentId: string;
+  expirationDate: DateTime;
 };
 
 type JoinSurveyPayload = {
@@ -19,6 +21,7 @@ type JoinSurveyPayload = {
 
 type JoinSurveyResponse = {
   respondentId: string;
+  expirationDate: DateTime;
 };
 
 export type Survey = {
@@ -52,7 +55,11 @@ export const createSurvey = async (
 ): Promise<CreateSurveyResponse | undefined> => {
   try {
     const res = await instance.post("/survey/create", data);
-    return res.data as CreateSurveyResponse;
+
+    return {
+      ...res.data,
+      expirationDate: DateTime.fromISO(res.data.expirationDate).toUTC()
+    } as CreateSurveyResponse;
   } catch (e) {
     console.log(e);
   }
@@ -64,7 +71,11 @@ export const joinSurvey = async (
 ): Promise<JoinSurveyResponse | undefined> => {
   try {
     const res = await instance.post(`survey/${surveyId}/join`, data);
-    return res.data as JoinSurveyResponse;
+
+    return {
+      ...res.data,
+      expirationDate: DateTime.fromISO(res.data.expirationDate).toUTC()
+    } as JoinSurveyResponse;
   } catch (e) {
     console.log(e);
   }
@@ -81,7 +92,11 @@ export const getSurvey = async (
       }
     });
 
-    return res.data;
+    return {
+      ...res.data,
+      creationDate: DateTime.fromISO(res.data.creationDate).toUTC(),
+      expirationDate: DateTime.fromISO(res.data.expirationDate).toUTC()
+    } as Survey;
   } catch (e: unknown) {
     console.error(e);
   }

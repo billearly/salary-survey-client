@@ -85,6 +85,7 @@ export const SurveyJoin = () => {
       saveSurveyLocally({
         surveyId,
         respondentId: data.respondentId,
+        expirationDate: data.expirationDate
       });
 
       setRespondentId(data.respondentId);
